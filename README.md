@@ -10,8 +10,6 @@
 
 Videojuego educativo 2D desarrollado en **Godot 4.6.1** que aborda la problemática
 del bullying y ciberacoso de manera empática, no violenta y educativa.
-El jugador toma decisiones, aprende estrategias de defensa positiva y desarrolla
-empatía hacia las víctimas de acoso.
 
 ---
 
