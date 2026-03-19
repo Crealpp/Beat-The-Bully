@@ -10,6 +10,33 @@ corner_detail = 15
 shadow_color = Color(0, 0, 0, 0.6392157)
 shadow_size = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d2ryq"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 15
+shadow_color = Color(1, 1, 1, 0.53333336)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x3et2"]
+bg_color = Color(0.3254902, 0, 0.47843137, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 15
+
 [node name="MainMenu" type="Control" unique_id=746766883]
 layout_mode = 3
 anchors_preset = 15
@@ -18,57 +45,55 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Start" type="Button" parent="." unique_id=2130309233]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=65355882]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -233.0
-offset_top = 105.5
-offset_right = 233.0
-offset_bottom = 194.5
+offset_left = -214.0
+offset_top = 23.0
+offset_right = 214.0
+offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0.3254902, 0, 0.47843137, 1)
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_cfbao")
-text = "OPTIONS"
+theme_override_constants/separation = 19
 
-[node name="Options" type="Button" parent="." unique_id=1983857904]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -233.0
-offset_top = 193.0
-offset_right = 233.0
-offset_bottom = 282.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="Start" type="Button" parent="VBoxContainer" unique_id=2130309233]
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.3254902, 0, 0.47843137, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
 theme_override_styles/normal = SubResource("StyleBoxFlat_cfbao")
-text = "EXIT"
-
-[node name="Exit" type="Button" parent="." unique_id=717736818]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -233.0
-offset_top = 18.0
-offset_right = 233.0
-offset_bottom = 107.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(0.3254902, 0, 0.47843137, 1)
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_cfbao")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_d2ryq")
+theme_override_styles/hover = SubResource("StyleBoxFlat_x3et2")
 text = "START
 "
+
+[node name="Options" type="Button" parent="VBoxContainer" unique_id=1983857904]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.3254902, 0, 0.47843137, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_cfbao")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_d2ryq")
+theme_override_styles/hover = SubResource("StyleBoxFlat_x3et2")
+text = "OPTIONS
+"
+
+[node name="Exit" type="Button" parent="VBoxContainer" unique_id=717736818]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.3254902, 0, 0.47843137, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_cfbao")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_d2ryq")
+theme_override_styles/hover = SubResource("StyleBoxFlat_x3et2")
+text = "EXIT"
