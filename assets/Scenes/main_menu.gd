@@ -16,7 +16,7 @@ func _on_exit_pressed() -> void:
 
 
 func _on_options_pressed() -> void:
-	print("silve 2")
+	get_tree().change_scene_to_file("res://assets/Scenes/opciones.tscn")
 
 
 func _on_start_pressed() -> void:
