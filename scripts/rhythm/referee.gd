@@ -15,7 +15,7 @@ signal level_ended(player_won: bool)
 @export var max_combo: int = 0
 
 
-func on_note_result(_action: String, timing: String, success: bool) -> void:
+func on_note_result(_player_action: String, _expected_action: String, timing: String, success: bool) -> void:
 	match timing:
 		"Perfect":
 			if success:

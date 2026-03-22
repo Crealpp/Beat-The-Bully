@@ -2,6 +2,7 @@
 class_name NoteData
 extends Resource
 
-@export var beat: int = 0
+## Momento exacto en milisegundos en que la nota debe ser tocada.
+@export var time_ms: float = 0.0
 # Valores válidos: "note_left", "note_down", "note_up", "note_right"
 @export var action: String = ""

@@ -20,9 +20,12 @@ func _ready() -> void:
 	rotation_degrees = ROTATIONS[direction]
 
 
+signal expired()
+
 func _process(delta: float) -> void:
 	position.y += speed * delta
 	if position.y > target_y + 100.0:
+		expired.emit()
 		queue_free()
 
 
