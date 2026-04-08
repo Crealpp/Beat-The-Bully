@@ -24,6 +24,10 @@ config/icon="res://assets/images/icons/icon.svg"
 
 buses/default_bus_layout="res://resources/data/default_bus_layout.tres"
 
+[autoload]
+
+Gamemanager="*uid://uh4t4v30gsf5"
+
 [display]
 
 window/size/viewport_width=1280

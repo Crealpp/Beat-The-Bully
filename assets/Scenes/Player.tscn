@@ -1,78 +1,7 @@
 [gd_scene format=3 uid="uid://wd4lvf24qo4"]
 
 [ext_resource type="Script" uid="uid://w7bcxi254f7r" path="res://assets/Scripts/Player.gd" id="1_2pn7s"]
-[ext_resource type="Texture2D" uid="uid://uas7d5b154el" path="res://assets/images/sprites/idle (1).png" id="2_apsa1"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2pn7s"]
-atlas = ExtResource("2_apsa1")
-region = Rect2(0, 0, 800, 807)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_apsa1"]
-atlas = ExtResource("2_apsa1")
-region = Rect2(800, 0, 800, 807)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vvas4"]
-atlas = ExtResource("2_apsa1")
-region = Rect2(1600, 0, 800, 807)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ekhp3"]
-atlas = ExtResource("2_apsa1")
-region = Rect2(2400, 0, 800, 807)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_42xth"]
-atlas = ExtResource("2_apsa1")
-region = Rect2(3200, 0, 800, 807)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_n5xvf"]
-atlas = ExtResource("2_apsa1")
-region = Rect2(4000, 0, 800, 807)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_k6weo"]
-atlas = ExtResource("2_apsa1")
-region = Rect2(0, 807, 800, 807)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_47lup"]
-atlas = ExtResource("2_apsa1")
-region = Rect2(800, 807, 800, 807)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vcdtb"]
-atlas = ExtResource("2_apsa1")
-region = Rect2(1600, 807, 800, 807)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_bb13o"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2pn7s")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_apsa1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vvas4")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ekhp3")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_42xth")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_n5xvf")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_k6weo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_47lup")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vcdtb")
-}],
-"loop": true,
-"name": &"Idle",
-"speed": 8.0
-}]
+[ext_resource type="SpriteFrames" uid="uid://bge26j1oybjcs" path="res://assets/images/sprites/idlepj2.tres" id="2_2pn7s"]
 
 [node name="Player" type="CharacterBody2D" unique_id=1155853386]
 script = ExtResource("1_2pn7s")
@@ -84,10 +13,9 @@ polygon = PackedVector2Array(0, 0, -2, 13, -4, 20, -3, 28, -2, 34, -6, 36, -10, 
 [node name="Animated" type="AnimatedSprite2D" parent="." unique_id=251224483]
 position = Vector2(-32, 19)
 scale = Vector2(0.104375094, 0.10437509)
-sprite_frames = SubResource("SpriteFrames_bb13o")
+sprite_frames = ExtResource("2_2pn7s")
 animation = &"Idle"
 autoplay = "Idle"
-frame_progress = 0.970635
 offset = Vector2(21.556274, -21.020538)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=992440153]

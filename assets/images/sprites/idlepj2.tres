@@ -1,0 +1,74 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://bge26j1oybjcs"]
+
+[ext_resource type="Texture2D" uid="uid://osnulh3qmeq4" path="res://assets/images/sprites/idle pj2.png" id="2_auax2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v6rg0"]
+atlas = ExtResource("2_auax2")
+region = Rect2(0, 0, 800, 807)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mirmn"]
+atlas = ExtResource("2_auax2")
+region = Rect2(800, 0, 800, 807)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qncrl"]
+atlas = ExtResource("2_auax2")
+region = Rect2(1600, 0, 800, 807)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2f70r"]
+atlas = ExtResource("2_auax2")
+region = Rect2(2400, 0, 800, 807)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0pmoc"]
+atlas = ExtResource("2_auax2")
+region = Rect2(3200, 0, 800, 807)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d6cby"]
+atlas = ExtResource("2_auax2")
+region = Rect2(4000, 0, 800, 807)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h48a0"]
+atlas = ExtResource("2_auax2")
+region = Rect2(0, 807, 800, 807)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uubbq"]
+atlas = ExtResource("2_auax2")
+region = Rect2(800, 807, 800, 807)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xb512"]
+atlas = ExtResource("2_auax2")
+region = Rect2(1600, 807, 800, 807)
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v6rg0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mirmn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qncrl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2f70r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0pmoc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6cby")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h48a0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uubbq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xb512")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 7.0
+}]
