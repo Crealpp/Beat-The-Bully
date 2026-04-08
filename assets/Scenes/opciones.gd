@@ -11,17 +11,6 @@ func _process(delta: float) -> void:
 	pass
 
 
-func _on_exit_pressed() -> void:
-	get_tree().quit()
-
-
-func _on_options_pressed() -> void:
-	get_tree().change_scene_to_file("res://assets/Scenes/opciones.tscn")
-
-
-func _on_start_pressed() -> void:
-	get_tree().change_scene_to_file("res://assets/Scenes/select_pj.tscn")
-
-
 func _on_back_pressed() -> void:
+	get_tree().change_scene_to_file("res://assets/Scenes/main_menu.tscn")
 	pass # Replace with function body.

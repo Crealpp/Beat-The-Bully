@@ -9,6 +9,7 @@ const SKIN_FRAMES := {
 }
 
 func _ready() -> void:
+	add_to_group("player")
 	set_skin(Gamemanager.selectedskin)
 
 

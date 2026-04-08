@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://bgb3s11rcg2ct" path="res://scripts/rhythm/referee.gd" id="6_b6yct"]
 [ext_resource type="PackedScene" uid="uid://cn4xtarget001" path="res://scenes/rhythm/NoteTarget.tscn" id="8_uhcme"]
 [ext_resource type="PackedScene" uid="uid://battlehud001" path="res://scenes/rhythm/BattleHUD.tscn" id="9_hud01"]
+[ext_resource type="PackedScene" uid="uid://dwu33kju7dyer" path="res://assets/Scenes/enemybattle.tscn" id="11_b6yct"]
+[ext_resource type="PackedScene" uid="uid://csq1t4ajb3h5x" path="res://assets/Scenes/player_battle.tscn" id="12_vsbcs"]
 
 [node name="ScBattle" type="Node2D" unique_id=1239436012]
 script = ExtResource("1_uhcme")
@@ -71,3 +73,9 @@ scale = Vector2(2, 2)
 
 [node name="BattleHUD" parent="." unique_id=1023945652 instance=ExtResource("9_hud01")]
 notes_container = NodePath("../Notes")
+
+[node name="Node2D" parent="." unique_id=446230275 instance=ExtResource("11_b6yct")]
+position = Vector2(516, -84)
+
+[node name="PlayerBattle" parent="." unique_id=323566821 instance=ExtResource("12_vsbcs")]
+position = Vector2(-508, -67)
