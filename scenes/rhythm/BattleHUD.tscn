@@ -16,9 +16,11 @@ design_size = Vector2(1280, 720)
 
 [node name="Root" type="Control" parent="."]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 0
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
 custom_minimum_size = Vector2(1280, 720)
 mouse_filter = 2
 
