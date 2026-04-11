@@ -11,6 +11,8 @@ var _arrow_travel_ms: float = 0.0
 @onready var _metronome:    Metronome    = $Metronome
 @onready var _composer:     Composer     = $Composer
 @onready var _judge:        Judge        = $Judge
+@onready var _referee:      Referee      = $Referee
+@onready var _enemy_gauge:  EnemyGauge   = $EnemyGauge
 @onready var _hud:          BattleHUD    = $BattleHUD
 
 @onready var _left_target:  NoteTarget = $Targets/LeftTarget
@@ -23,6 +25,8 @@ var _pending_notes: Dictionary = {
 }
 var _fallback_ms: float = 0.0
 var _using_fallback: bool = false
+var _last_note_ms: float = 0.0
+var _survival_declared: bool = false
 
 
 func _ready() -> void:
@@ -35,11 +39,17 @@ func _connect_game_loop() -> void:
 	_composer.note_expected.connect(_on_note_expected)
 	_player_input.button_pressed.connect(_on_button_pressed)
 	_judge.note_result.connect(_on_note_result_debug)
+	_judge.note_result.connect(_referee.on_note_result)
+	_referee.level_ended.connect(_on_level_ended)
 
 
 func _connect_hud() -> void:
 	_composer.note_expected.connect(_hud._on_composer_note_expected)
 	_judge.note_result.connect(_hud._on_judge_note_result)
+	_referee.player_hp_updated.connect(_hud.on_player_hp_updated)
+	_referee.score_updated.connect(_hud.on_score_updated)
+	_referee.combo_updated.connect(_hud.on_combo_updated)
+	_enemy_gauge.enemy_hp_updated.connect(_hud.on_enemy_hp_updated)
 	_hud.setup_targets(_left_target, _down_target, _up_target, _right_target)
 	_arrow_travel_ms = _hud.arrow_travel_ms
 	_composer.anticipation_ms = _arrow_travel_ms
@@ -53,6 +63,7 @@ func _load_chart() -> void:
 	_music_player.bpm = data.bpm
 	_metronome.bpm    = data.bpm
 	_composer.load_chart(data.notes)
+	_last_note_ms = data.notes[data.notes.size() - 1].time_ms
 	if _music_player.stream != null:
 		_music_player.play()
 	else:
@@ -64,18 +75,44 @@ func _get_current_ms() -> float:
 	return _fallback_ms if _using_fallback else _music_player.get_position_ms()
 
 
+func _get_song_total_ms() -> float:
+	if not _using_fallback and _music_player.stream != null:
+		var length_s: float = _music_player.stream.get_length()
+		if length_s > 0.0:
+			return length_s * 1000.0
+	return _last_note_ms
+
+
 func _process(delta: float) -> void:
 	if _using_fallback:
 		_fallback_ms += delta * 1000.0
 	var current_ms: float = _get_current_ms()
 	_metronome.update_time(current_ms)
 	_composer.update_time(current_ms)
+
+	# Progreso escénico del enemigo.
+	var total_ms: float = _get_song_total_ms()
+	if total_ms > 0.0:
+		_enemy_gauge.update_song_progress(current_ms / total_ms)
+
 	# Auto-miss
 	for action in _pending_notes:
 		var queue: Array = _pending_notes[action]
 		while not queue.is_empty() and current_ms > queue[0].hit_ms + _metronome.window_good:
 			_judge.evaluate("", queue[0].note, "Miss")
 			queue.pop_front()
+
+	# Victoria escénica: jugador sobrevivió hasta el final del chart.
+	if not _survival_declared and current_ms >= _last_note_ms + _metronome.window_good and _all_queues_empty():
+		_survival_declared = true
+		_referee.declare_survival()
+
+
+func _all_queues_empty() -> bool:
+	for action in _pending_notes:
+		if not _pending_notes[action].is_empty():
+			return false
+	return true
 
 
 func _on_note_expected(note: NoteData) -> void:
@@ -96,3 +133,8 @@ func _on_button_pressed(action: String) -> void:
 func _on_note_result_debug(player_action: String, expected_action: String, timing: String, success: bool) -> void:
 	var label: String = "HIT" if success else "MISS"
 	print("[RHYTHM] %s | %s | esperada=%s | presionada=%s | t=%.0fms" % [label, timing, expected_action, player_action, _get_current_ms()])
+
+
+func _on_level_ended(player_won: bool) -> void:
+	print("[RHYTHM] Level ended — player_won=%s" % player_won)
+	_music_player.stop()

@@ -8,6 +8,9 @@
 [ext_resource type="Script" uid="uid://dtqvcn7nsksux" path="res://scripts/rhythm/composer.gd" id="4_1gs6b"]
 [ext_resource type="Script" uid="uid://kon1ljibvyeq" path="res://scripts/rhythm/judge.gd" id="5_3he3o"]
 [ext_resource type="Script" uid="uid://bgb3s11rcg2ct" path="res://scripts/rhythm/referee.gd" id="6_b6yct"]
+[ext_resource type="Script" path="res://scripts/rhythm/enemy_gauge.gd" id="7_egauge"]
+[ext_resource type="Resource" path="res://assets/rules/default_score_rules.tres" id="7_scorerules"]
+[ext_resource type="Resource" path="res://assets/rules/default_health_rules.tres" id="7_healthrules"]
 [ext_resource type="PackedScene" uid="uid://cn4xtarget001" path="res://scenes/rhythm/NoteTarget.tscn" id="8_uhcme"]
 [ext_resource type="PackedScene" uid="uid://battlehud001" path="res://scenes/rhythm/BattleHUD.tscn" id="9_hud01"]
 [ext_resource type="PackedScene" uid="uid://dwu33kju7dyer" path="res://assets/Scenes/enemybattle.tscn" id="11_b6yct"]
@@ -43,7 +46,13 @@ metadata/_custom_type_script = "uid://kon1ljibvyeq"
 
 [node name="Referee" type="Node" parent="." unique_id=1725350886]
 script = ExtResource("6_b6yct")
+score_rules = ExtResource("7_scorerules")
+health_rules = ExtResource("7_healthrules")
 metadata/_custom_type_script = "uid://bgb3s11rcg2ct"
+
+[node name="EnemyGauge" type="Node" parent="." unique_id=1931122001]
+script = ExtResource("7_egauge")
+max_hp = 100.0
 
 [node name="Targets" type="Node2D" parent="." unique_id=2112607533]
 position = Vector2(1, 228)

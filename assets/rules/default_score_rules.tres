@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ScoreRules" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/rhythm/score_rules.gd" id="1_scorerules"]
+
+[resource]
+script = ExtResource("1_scorerules")
+perfect_points = 300
+good_points = 100
+miss_points = -50
+combo_bonus_per_hit = 10
+min_score = 0

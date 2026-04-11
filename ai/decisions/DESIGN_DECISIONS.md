@@ -96,4 +96,45 @@ All other communication is signal-based.
 
 ---
 
+### 2026-04-10 — Sistema de Vida y Score Data-Driven + Enemy HP Escénico
+**Contexto:** El `Referee` tenía HP/score/combo con valores hardcoded y no estaba
+conectado al `Judge`, por lo que ninguna nota afectaba el estado del juego. Además
+se necesitaba una barra de vida del enemigo que fuese "dramática": debe vaciarse
+exactamente al terminar la canción, para que el criterio real de victoria sea la
+supervivencia del jugador.
+
+**Opciones consideradas:**
+- Mantener los valores dentro de `Referee` como `@export` planos
+- Dividir `Referee` en nodos separados (HealthTracker / ScoreTracker / ComboTracker)
+- **Resources (`ScoreRules`, `HealthRules`) asignadas al `Referee`** — elegida
+
+**Decisión tomada:**
+- Crear `ScoreRules` y `HealthRules` como `Resource` con `@export` por rating.
+- Refactor de `Referee`: data-driven, lee todo desde los dos `Resource`. Arreglado
+  bug del combo en "Good" (antes reseteaba a 0).
+- Nuevo `EnemyGauge` (Node, SRP) que expone `update_song_progress(progress)` y se
+  vacía linealmente con el % de canción reproducido.
+- `Battle` alimenta al `EnemyGauge` cada frame y llama `Referee.declare_survival()`
+  cuando el chart se agota, disparando `level_ended(true)`.
+- `BattleHUD` ahora muestra dos `ProgressBar`s (player / enemy) + `ScoreLabel` +
+  `ComboLabel` y se suscribe a las signals del Referee y del EnemyGauge.
+- Presets por defecto guardados en `assets/rules/default_score_rules.tres` y
+  `assets/rules/default_health_rules.tres`. Cambiar dificultad = swap del `.tres`.
+
+**Consecuencias:**
+- (+) Open/Closed: se crean nuevos presets (`.tres`) sin tocar código.
+- (+) SRP: reglas = datos, Referee = estado, EnemyGauge = barra escénica, HUD = UI.
+- (+) DIP: `Referee` depende de los `Resource` exportados, no de literales.
+- (+) Victoria coherente con la historia: "sobrevive a la canción y ganas".
+- (-) Requiere abrir `Battle.tscn` para reasignar los `Resource` si se mueven.
+
+**Archivos creados:**
+`scripts/rhythm/score_rules.gd`, `scripts/rhythm/health_rules.gd`,
+`scripts/rhythm/enemy_gauge.gd`, `assets/rules/default_score_rules.tres`,
+`assets/rules/default_health_rules.tres`
+
+**Asistida por IA:** Sí — Claude Opus 4.6
+
+---
+
 <!-- Agrega nuevas decisiones aquí -->

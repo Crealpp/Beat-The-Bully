@@ -11,6 +11,10 @@ const ACTION_TO_DIRECTION: Dictionary = {
 }
 
 @export var notes_container: NodePath = NodePath("")
+@export var player_hp_bar_path: NodePath = NodePath("Root/PlayerHPBar")
+@export var enemy_hp_bar_path: NodePath = NodePath("Root/EnemyHPBar")
+@export var score_label_path: NodePath = NodePath("Root/ScoreLabel")
+@export var combo_label_path: NodePath = NodePath("Root/ComboLabel")
 
 var _arrow_queues: Dictionary = {
 	"note_left": [], "note_down": [], "note_up": [], "note_right": [],
@@ -21,9 +25,18 @@ var _lane_x: Dictionary = {}
 var _target_y: float = 0.0
 var arrow_travel_ms: float = 0.0
 
+var _player_hp_bar: ProgressBar
+var _enemy_hp_bar: ProgressBar
+var _score_label: Label
+var _combo_label: Label
+
 
 func _ready() -> void:
 	_notes_node = get_node(notes_container) as Node2D
+	_player_hp_bar = get_node_or_null(player_hp_bar_path) as ProgressBar
+	_enemy_hp_bar = get_node_or_null(enemy_hp_bar_path) as ProgressBar
+	_score_label = get_node_or_null(score_label_path) as Label
+	_combo_label = get_node_or_null(combo_label_path) as Label
 
 
 func setup_targets(left: NoteTarget, down: NoteTarget, up: NoteTarget, right: NoteTarget) -> void:
@@ -75,3 +88,34 @@ func _consume_oldest_arrow(action: String) -> void:
 	var obj = queue.pop_front()
 	if is_instance_valid(obj):
 		(obj as NoteArrow).destroy()
+
+
+# ── Referee / EnemyGauge signal handlers ──────────────────
+
+func on_player_hp_updated(hp: int, max_hp: int) -> void:
+	if _player_hp_bar == null:
+		return
+	_player_hp_bar.max_value = max_hp
+	_player_hp_bar.value = hp
+
+
+func on_enemy_hp_updated(hp: float, max_hp: float) -> void:
+	if _enemy_hp_bar == null:
+		return
+	_enemy_hp_bar.max_value = max_hp
+	_enemy_hp_bar.value = hp
+
+
+func on_score_updated(score: int) -> void:
+	if _score_label == null:
+		return
+	_score_label.text = "Score: %d" % score
+
+
+func on_combo_updated(combo: int, max_combo: int) -> void:
+	if _combo_label == null:
+		return
+	if combo <= 0:
+		_combo_label.text = "Combo: 0  (max %d)" % max_combo
+	else:
+		_combo_label.text = "Combo: %d  (max %d)" % [combo, max_combo]
