@@ -11,11 +11,17 @@ const ACTION_TO_DIRECTION: Dictionary = {
 }
 
 @export var notes_container: NodePath = NodePath("")
+@export var root_path: NodePath = NodePath("Root")
 @export var player_hp_bar_path: NodePath = NodePath("Root/PlayerHPBar")
 @export var enemy_hp_bar_path: NodePath = NodePath("Root/EnemyHPBar")
 @export var score_label_path: NodePath = NodePath("Root/ScoreLabel")
 @export var combo_label_path: NodePath = NodePath("Root/ComboLabel")
 @export var rating_feedback_path: NodePath = NodePath("Root/RatingFeedback")
+
+## Tamaño base de diseño del HUD. El Root Control se mantiene a este tamaño
+## en el editor para edición visual y se reescala al tamaño real del viewport
+## en runtime, conservando el layout por anchors.
+@export var design_size: Vector2 = Vector2(1280, 720)
 
 @export_group("Combo bounce")
 @export var combo_pop_scale: float = 1.5
@@ -30,6 +36,7 @@ var _lane_x: Dictionary = {}
 var _target_y: float = 0.0
 var arrow_travel_ms: float = 0.0
 
+var _root: Control
 var _player_hp_bar: ProgressBar
 var _enemy_hp_bar: ProgressBar
 var _score_label: Label
@@ -39,6 +46,7 @@ var _rating_feedback: RatingFeedback
 
 func _ready() -> void:
 	_notes_node = get_node(notes_container) as Node2D
+	_root = get_node_or_null(root_path) as Control
 	_player_hp_bar = get_node_or_null(player_hp_bar_path) as ProgressBar
 	_enemy_hp_bar = get_node_or_null(enemy_hp_bar_path) as ProgressBar
 	_score_label = get_node_or_null(score_label_path) as Label
@@ -46,6 +54,20 @@ func _ready() -> void:
 	_rating_feedback = get_node_or_null(rating_feedback_path) as RatingFeedback
 	if _combo_label != null:
 		_combo_label.pivot_offset = _combo_label.size / 2.0
+	_fit_root_to_viewport()
+	get_viewport().size_changed.connect(_fit_root_to_viewport)
+
+
+# Mantiene el Root del HUD anclado al viewport real, conservando el design_size
+# como mínimo (para visibilidad en el editor). Los anchors de los hijos hacen
+# el resto del trabajo.
+func _fit_root_to_viewport() -> void:
+	if _root == null:
+		return
+	var vp_size: Vector2 = get_viewport().get_visible_rect().size
+	_root.custom_minimum_size = design_size
+	_root.size = vp_size
+	_root.position = Vector2.ZERO
 
 
 func setup_targets(left: NoteTarget, down: NoteTarget, up: NoteTarget, right: NoteTarget) -> void:

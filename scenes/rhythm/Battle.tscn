@@ -13,7 +13,6 @@
 [ext_resource type="Resource" path="res://assets/rules/default_health_rules.tres" id="7_healthrules"]
 [ext_resource type="PackedScene" uid="uid://cn4xtarget001" path="res://scenes/rhythm/NoteTarget.tscn" id="8_uhcme"]
 [ext_resource type="PackedScene" uid="uid://battlehud001" path="res://scenes/rhythm/BattleHUD.tscn" id="9_hud01"]
-[ext_resource type="PackedScene" uid="uid://dxynl7wvaaaii" path="res://scenes/rhythm/LoseScreen.tscn" id="10_lose01"]
 [ext_resource type="PackedScene" uid="uid://dwu33kju7dyer" path="res://assets/Scenes/enemybattle.tscn" id="11_b6yct"]
 [ext_resource type="PackedScene" uid="uid://csq1t4ajb3h5x" path="res://assets/Scenes/player_battle.tscn" id="12_vsbcs"]
 
@@ -83,8 +82,6 @@ scale = Vector2(2, 2)
 
 [node name="BattleHUD" parent="." unique_id=1023945652 instance=ExtResource("9_hud01")]
 notes_container = NodePath("../Notes")
-
-[node name="LoseScreen" parent="." unique_id=2009888001 instance=ExtResource("10_lose01")]
 
 [node name="Node2D" parent="." unique_id=446230275 instance=ExtResource("11_b6yct")]
 position = Vector2(516, -84)

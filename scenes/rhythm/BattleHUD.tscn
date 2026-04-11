@@ -12,13 +12,19 @@ enemy_hp_bar_path = NodePath("Root/EnemyHPBar")
 score_label_path = NodePath("Root/ScoreLabel")
 combo_label_path = NodePath("Root/ComboLabel")
 rating_feedback_path = NodePath("Root/RatingFeedback")
+design_size = Vector2(1280, 720)
 
 [node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_minimum_size = Vector2(1280, 720)
 mouse_filter = 2
 
 [node name="PlayerHPBar" type="ProgressBar" parent="Root"]
+layout_mode = 1
+anchors_preset = -1
 offset_left = 24.0
 offset_top = 24.0
 offset_right = 344.0
@@ -28,6 +34,8 @@ value = 100.0
 show_percentage = false
 
 [node name="PlayerHPLabel" type="Label" parent="Root/PlayerHPBar"]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 horizontal_alignment = 1
@@ -35,6 +43,8 @@ vertical_alignment = 1
 text = "PLAYER"
 
 [node name="EnemyHPBar" type="ProgressBar" parent="Root"]
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -344.0
@@ -46,6 +56,8 @@ value = 100.0
 show_percentage = false
 
 [node name="EnemyHPLabel" type="Label" parent="Root/EnemyHPBar"]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 horizontal_alignment = 1
@@ -53,17 +65,22 @@ vertical_alignment = 1
 text = "ENEMY"
 
 [node name="ScoreLabel" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = -1
 offset_left = 24.0
 offset_top = 64.0
 offset_right = 344.0
-offset_bottom = 92.0
+offset_bottom = 96.0
+theme_override_font_sizes/font_size = 22
 text = "Score: 0"
 
 [node name="ComboLabel" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = -1
 offset_left = 24.0
-offset_top = 96.0
-offset_right = 344.0
-offset_bottom = 140.0
+offset_top = 100.0
+offset_right = 384.0
+offset_bottom = 144.0
 theme_override_font_sizes/font_size = 28
 text = "Combo: 0  (max 0)"
 
@@ -73,14 +90,16 @@ label_path = NodePath("../RatingLabel")
 texture_rect_path = NodePath("../RatingTexture")
 
 [node name="RatingLabel" type="Label" parent="Root"]
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 0.0
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 0.0
 offset_left = -200.0
-offset_top = -180.0
+offset_top = 140.0
 offset_right = 200.0
-offset_bottom = -100.0
+offset_bottom = 220.0
 horizontal_alignment = 1
 vertical_alignment = 1
 theme_override_font_sizes/font_size = 64
@@ -88,13 +107,15 @@ text = ""
 
 [node name="RatingTexture" type="TextureRect" parent="Root"]
 visible = false
+layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 0.0
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 0.0
 offset_left = -160.0
-offset_top = -200.0
+offset_top = 130.0
 offset_right = 160.0
-offset_bottom = -80.0
+offset_bottom = 250.0
 expand_mode = 1
 stretch_mode = 5

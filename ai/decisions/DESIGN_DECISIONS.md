@@ -187,4 +187,46 @@ sin tocar código.
 
 ---
 
+### 2026-04-10 — HUD WYSIWYG y LoseScreen como escena independiente
+**Contexto:** Dos problemas reportados al editar `Battle.tscn`:
+1. El `BattleHUD` no se veía bien en el editor 2D porque el `Control` raíz del
+   `CanvasLayer` no tenía tamaño explícito → los hijos no eran "framables".
+2. El `LoseScreen` estaba instanciado dentro de `Battle.tscn` como overlay,
+   por lo que tampoco era cómodo editarlo en aislado.
+
+**Decisión tomada:**
+- `BattleHUD.tscn`:
+  - Root `Control` con `custom_minimum_size = (1280, 720)` y anchors Full Rect.
+  - Todos los hijos pasan a usar anchor presets (`top_left`, `top_right`,
+    `top_center`) en lugar de pixeles flotando en cualquier sitio.
+  - Nuevo `@export var design_size: Vector2 = Vector2(1280, 720)` en
+    `battle_hud.gd`. En `_ready()` el HUD ajusta el Root al viewport real y se
+    suscribe a `viewport.size_changed` para reescalar en runtime.
+  - Resultado: al abrir `BattleHUD.tscn` en el editor se ve un rectángulo
+    1280x720 con el layout listo para arrastrar. En `Battle.tscn`, el HUD se
+    auto-encaja al viewport del juego sin importar dónde esté la `Camera2D`.
+- `LoseScreen`:
+  - Root pasa de `CanvasLayer` a `Control` (escena raíz independiente con
+    full-rect + design size).
+  - Se elimina la instancia incrustada en `Battle.tscn`.
+  - `Battle._on_level_ended(false)` ahora hace
+    `get_tree().change_scene_to_file(lose_scene_path)`.
+  - `LoseScreen` expone `battle_scene_path` y `menu_scene_path` con
+    `@export_file("*.tscn")` — Reintentar / Volver al menú son configurables
+    desde el Inspector sin tocar código.
+
+**Por qué escena aparte:** abrir `LoseScreen.tscn` en el editor lo muestra a
+1280x720 como vista única; mucho más cómodo para iterar visualmente que un
+overlay encimado en el Battle. Además queda reutilizable por cualquier batalla
+futura.
+
+**Archivos modificados:**
+`scenes/rhythm/BattleHUD.tscn`, `scenes/rhythm/LoseScreen.tscn`,
+`scenes/rhythm/Battle.tscn`, `scripts/rhythm/battle_hud.gd`,
+`scripts/rhythm/battle.gd`, `scripts/rhythm/lose_screen.gd`
+
+**Asistida por IA:** Sí — Claude Opus 4.6
+
+---
+
 <!-- Agrega nuevas decisiones aquí -->
