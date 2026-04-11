@@ -21,7 +21,7 @@
 
 ## 🏗️ Requisitos Técnicos (Materia POO)
 
-- [x] Mínimo **5 clases (TAD)** de autoría propia — ✅ 10 clases implementadas en `scripts/rhythm/`
+- [x] Mínimo **5 clases (TAD)** de autoría propia — ✅ 12 clases implementadas en `scripts/rhythm/`
 - [ ] Al menos **1 patrón de diseño** (Sin contar Singleton, Prototype ni Module)
 - [ ] **Interfaz gráfica** obligatoria (Godot UI)
 - [ ] **Componente aleatorio** 
@@ -40,9 +40,9 @@ feria-gamer-game/
 ├── assets/          # Sprites, audio, fuentes, videos
 ├── scenes/          # Escenas Godot (.tscn)
 ├── scripts/         # GDScript (.gd) — lógica del juego
-│   └── rhythm/      # Sistema de ritmo: 10 clases (NoteData, PlayerInput, MusicPlayer,
+│   └── rhythm/      # Sistema de ritmo: 12 clases (NoteData, PlayerInput, MusicPlayer,
 │                    #   Metronome, Composer, Judge, Referee, ScoreRules,
-│                    #   HealthRules, EnemyGauge)
+│                    #   HealthRules, EnemyGauge, RatingFeedback, LoseScreen)
 ├── resources/       # Temas, shaders, materiales, datos
 ├── addons/          # Plugins de Godot (Asset Library)
 ├── tests/           # Tests unitarios / integración
@@ -78,6 +78,8 @@ use direct method calls by design.
 | `score_rules.gd` | ScoreRules | Resource | Tunable score values (editor) |
 | `health_rules.gd` | HealthRules | Resource | Tunable HP values (editor) |
 | `enemy_gauge.gd` | EnemyGauge | Node | Scripted enemy HP (song progress) |
+| `rating_feedback.gd` | RatingFeedback | Node | Popup PERFECT/GOOD/MISS (text or image) |
+| `lose_screen.gd` | LoseScreen | CanvasLayer | Defeat overlay with retry / menu |
 
 Signal flow: `MusicPlayer` → `Metronome` → `Composer` → `Judge` → `Referee` → UI.
 `Battle` drives `EnemyGauge.update_song_progress()` each frame.

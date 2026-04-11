@@ -14,6 +14,7 @@ var _arrow_travel_ms: float = 0.0
 @onready var _referee:      Referee      = $Referee
 @onready var _enemy_gauge:  EnemyGauge   = $EnemyGauge
 @onready var _hud:          BattleHUD    = $BattleHUD
+@onready var _lose_screen:  LoseScreen   = $LoseScreen
 
 @onready var _left_target:  NoteTarget = $Targets/LeftTarget
 @onready var _down_target:  NoteTarget = $Targets/DownTarget
@@ -46,6 +47,7 @@ func _connect_game_loop() -> void:
 func _connect_hud() -> void:
 	_composer.note_expected.connect(_hud._on_composer_note_expected)
 	_judge.note_result.connect(_hud._on_judge_note_result)
+	_player_input.button_pressed.connect(_hud.on_player_pressed)
 	_referee.player_hp_updated.connect(_hud.on_player_hp_updated)
 	_referee.score_updated.connect(_hud.on_score_updated)
 	_referee.combo_updated.connect(_hud.on_combo_updated)
@@ -138,3 +140,5 @@ func _on_note_result_debug(player_action: String, expected_action: String, timin
 func _on_level_ended(player_won: bool) -> void:
 	print("[RHYTHM] Level ended — player_won=%s" % player_won)
 	_music_player.stop()
+	if not player_won and _lose_screen != null:
+		_lose_screen.show_screen()

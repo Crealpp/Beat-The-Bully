@@ -137,4 +137,54 @@ supervivencia del jugador.
 
 ---
 
+### 2026-04-10 — Visual Feedback (Rating Popup, Press Flash, Combo Bounce, Lose Screen)
+**Contexto:** El HUD ya mostraba HP/score/combo, pero faltaba feedback inmediato:
+no se distinguía visualmente cuándo el jugador presionaba un target, no había
+indicación clara del rating de cada nota (Perfect/Good/Miss), el combo no
+"vivía" visualmente, y no existía pantalla de derrota.
+
+**Decisión tomada:**
+- `NoteTarget` ahora expone `idle/press/hit/miss_color` y `flash_seconds` como
+  `@export`, y añade `flash_press()`. Las animaciones usan un token monotónico
+  para evitar que un flash más largo apague otro más reciente.
+- Nueva clase `RatingFeedback` (Node, SRP) que muestra el rating con texto por
+  defecto y soporta texturas opcionales por rating (`perfect_texture`,
+  `good_texture`, `miss_texture`) asignables desde el Inspector. Conectada a
+  `Judge.note_result` desde el HUD. Animación pop con `Tween`.
+- `BattleHUD.on_combo_updated` aplica un mini-pop con `Tween` al `ComboLabel`
+  (escala configurable: `combo_pop_scale`, `combo_pop_seconds`).
+- `BattleHUD.on_player_pressed` se conecta a `PlayerInput.button_pressed` y
+  llama `flash_press()` al target del action correspondiente — el target brilla
+  aunque no haya una nota válida.
+- Nueva clase `LoseScreen` (CanvasLayer) instanciada dentro de `Battle.tscn`.
+  Se invoca desde `Battle._on_level_ended(false)`. Pausa el árbol y ofrece
+  Reintentar / Volver al menú. Ruta del menú configurable por `@export`.
+
+**Por qué texto + textura opcional:** todavía no existen sprites para los
+ratings, pero el flujo no debe bloquearse esperando arte. Cualquier integrante
+puede arrastrar un PNG al slot del Inspector y el popup pasa a usar la imagen
+sin tocar código.
+
+**Consecuencias:**
+- (+) Toda la sintonía visual (colores, duraciones, escalas, textos) vive en
+  `@export` — editable sin tocar código (OCP).
+- (+) `RatingFeedback` y `LoseScreen` son nodos independientes; el HUD las
+  delega vía signal o método (SRP).
+- (+) Coherente con el resto del sistema: signal-driven y data-driven.
+- (-) `RatingFeedback` instancia un `Tween` por nota — costo despreciable a
+  escala de juego de feria.
+
+**Archivos creados:**
+`scripts/rhythm/rating_feedback.gd`, `scripts/rhythm/lose_screen.gd`,
+`scenes/rhythm/LoseScreen.tscn`
+
+**Archivos modificados:**
+`scripts/rhythm/note_target.gd`, `scripts/rhythm/battle_hud.gd`,
+`scripts/rhythm/battle.gd`, `scenes/rhythm/BattleHUD.tscn`,
+`scenes/rhythm/Battle.tscn`
+
+**Asistida por IA:** Sí — Claude Opus 4.6
+
+---
+
 <!-- Agrega nuevas decisiones aquí -->

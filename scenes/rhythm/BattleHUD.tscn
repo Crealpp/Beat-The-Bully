@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://battlehud001"]
+[gd_scene load_steps=3 format=3 uid="uid://battlehud001"]
 
 [ext_resource type="Script" path="res://scripts/rhythm/battle_hud.gd" id="1_hud"]
+[ext_resource type="Script" path="res://scripts/rhythm/rating_feedback.gd" id="2_rating"]
 
 [node name="BattleHUD" type="CanvasLayer"]
 layer = 1
@@ -10,6 +11,7 @@ player_hp_bar_path = NodePath("Root/PlayerHPBar")
 enemy_hp_bar_path = NodePath("Root/EnemyHPBar")
 score_label_path = NodePath("Root/ScoreLabel")
 combo_label_path = NodePath("Root/ComboLabel")
+rating_feedback_path = NodePath("Root/RatingFeedback")
 
 [node name="Root" type="Control" parent="."]
 anchor_right = 1.0
@@ -61,5 +63,38 @@ text = "Score: 0"
 offset_left = 24.0
 offset_top = 96.0
 offset_right = 344.0
-offset_bottom = 124.0
+offset_bottom = 140.0
+theme_override_font_sizes/font_size = 28
 text = "Combo: 0  (max 0)"
+
+[node name="RatingFeedback" type="Node" parent="Root"]
+script = ExtResource("2_rating")
+label_path = NodePath("../RatingLabel")
+texture_rect_path = NodePath("../RatingTexture")
+
+[node name="RatingLabel" type="Label" parent="Root"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -180.0
+offset_right = 200.0
+offset_bottom = -100.0
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_font_sizes/font_size = 64
+text = ""
+
+[node name="RatingTexture" type="TextureRect" parent="Root"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -200.0
+offset_right = 160.0
+offset_bottom = -80.0
+expand_mode = 1
+stretch_mode = 5

@@ -15,6 +15,11 @@ const ACTION_TO_DIRECTION: Dictionary = {
 @export var enemy_hp_bar_path: NodePath = NodePath("Root/EnemyHPBar")
 @export var score_label_path: NodePath = NodePath("Root/ScoreLabel")
 @export var combo_label_path: NodePath = NodePath("Root/ComboLabel")
+@export var rating_feedback_path: NodePath = NodePath("Root/RatingFeedback")
+
+@export_group("Combo bounce")
+@export var combo_pop_scale: float = 1.5
+@export var combo_pop_seconds: float = 0.18
 
 var _arrow_queues: Dictionary = {
 	"note_left": [], "note_down": [], "note_up": [], "note_right": [],
@@ -29,6 +34,7 @@ var _player_hp_bar: ProgressBar
 var _enemy_hp_bar: ProgressBar
 var _score_label: Label
 var _combo_label: Label
+var _rating_feedback: RatingFeedback
 
 
 func _ready() -> void:
@@ -37,6 +43,9 @@ func _ready() -> void:
 	_enemy_hp_bar = get_node_or_null(enemy_hp_bar_path) as ProgressBar
 	_score_label = get_node_or_null(score_label_path) as Label
 	_combo_label = get_node_or_null(combo_label_path) as Label
+	_rating_feedback = get_node_or_null(rating_feedback_path) as RatingFeedback
+	if _combo_label != null:
+		_combo_label.pivot_offset = _combo_label.size / 2.0
 
 
 func setup_targets(left: NoteTarget, down: NoteTarget, up: NoteTarget, right: NoteTarget) -> void:
@@ -66,15 +75,22 @@ func _on_composer_note_expected(note: NoteData) -> void:
 	_arrow_queues[note.action].append(arrow)
 
 
-func _on_judge_note_result(player_action: String, expected_action: String, _timing: String, success: bool) -> void:
+func _on_judge_note_result(player_action: String, expected_action: String, timing: String, success: bool) -> void:
 	var flash_action: String = player_action if _targets.has(player_action) else expected_action
-	if not _targets.has(flash_action):
-		return
-	if success:
-		_targets[flash_action].flash_hit()
-		_consume_oldest_arrow(expected_action)
-	else:
-		_targets[flash_action].flash_miss()
+	if _targets.has(flash_action):
+		if success:
+			_targets[flash_action].flash_hit()
+			_consume_oldest_arrow(expected_action)
+		else:
+			_targets[flash_action].flash_miss()
+	if _rating_feedback != null:
+		_rating_feedback.on_note_result(player_action, expected_action, timing, success)
+
+
+# Conectado a PlayerInput.button_pressed para iluminar el target al presionar.
+func on_player_pressed(action: String) -> void:
+	if _targets.has(action):
+		_targets[action].flash_press()
 
 
 func _on_arrow_expired(action: String, arrow: NoteArrow) -> void:
@@ -118,4 +134,8 @@ func on_combo_updated(combo: int, max_combo: int) -> void:
 	if combo <= 0:
 		_combo_label.text = "Combo: 0  (max %d)" % max_combo
 	else:
-		_combo_label.text = "Combo: %d  (max %d)" % [combo, max_combo]
+		_combo_label.text = "Combo: x%d  (max %d)" % [combo, max_combo]
+		_combo_label.pivot_offset = _combo_label.size / 2.0
+		_combo_label.scale = Vector2(combo_pop_scale, combo_pop_scale)
+		var tween: Tween = create_tween()
+		tween.tween_property(_combo_label, "scale", Vector2.ONE, combo_pop_seconds)
