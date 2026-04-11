@@ -22,7 +22,7 @@
 ## 🏗️ Requisitos Técnicos (Materia POO)
 
 - [x] Mínimo **5 clases (TAD)** de autoría propia — ✅ 10 clases implementadas en `scripts/rhythm/`
-- [x] Al menos **1 patrón de diseño** (Sin contar Singleton, Prototype ni Module) — ✅ Observer (señales de Godot)
+- [ ] Al menos **1 patrón de diseño** (Sin contar Singleton, Prototype ni Module)
 - [ ] **Interfaz gráfica** obligatoria (Godot UI)
 - [ ] **Componente aleatorio** 
 - [ ] **Componente inclusivo** (subtítulos, modos de accesibilidad, selección de avatar)
@@ -63,8 +63,8 @@ feria-gamer-game/
 ## 🎵 Rhythm System — Implemented Classes
 
 All classes are in `scripts/rhythm/`. They follow SOLID principles and communicate
-exclusively via signals (Observer pattern), except MusicPlayer → Metronome and
-Battle → EnemyGauge which use direct method calls by design.
+mainly through Godot signals; `MusicPlayer → Metronome` and `Battle → EnemyGauge`
+use direct method calls by design.
 
 | File | Class | Base | Role |
 |------|-------|------|------|
