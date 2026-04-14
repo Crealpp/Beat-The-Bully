@@ -1,50 +1,46 @@
-[gd_scene load_steps=3 format=3 uid="uid://battlehud001"]
+[gd_scene format=3 uid="uid://battlehud001"]
 
-[ext_resource type="Script" path="res://scripts/rhythm/battle_hud.gd" id="1_hud"]
-[ext_resource type="Script" path="res://scripts/rhythm/rating_feedback.gd" id="2_rating"]
+[ext_resource type="Script" uid="uid://dmipmr0em8y82" path="res://scripts/rhythm/battle_hud.gd" id="1_hud"]
+[ext_resource type="Script" uid="uid://dmbbqnws5lunn" path="res://scripts/rhythm/rating_feedback.gd" id="2_rating"]
+[ext_resource type="Texture2D" uid="uid://dow51mb1eicxf" path="res://assets/images/sprites/perfect.webp" id="3_e1ng7"]
+[ext_resource type="Texture2D" uid="uid://dnxy5s1lwxawj" path="res://assets/images/sprites/good.webp" id="4_tg0cx"]
+[ext_resource type="Texture2D" uid="uid://cyd55qdfmxmvh" path="res://assets/images/sprites/miss.webp" id="5_sdk5g"]
 
-[node name="BattleHUD" type="CanvasLayer"]
-layer = 1
+[node name="BattleHUD" type="CanvasLayer" unique_id=641040789]
 script = ExtResource("1_hud")
-notes_container = NodePath("")
-player_hp_bar_path = NodePath("Root/PlayerHPBar")
-enemy_hp_bar_path = NodePath("Root/EnemyHPBar")
-score_label_path = NodePath("Root/ScoreLabel")
-combo_label_path = NodePath("Root/ComboLabel")
-rating_feedback_path = NodePath("Root/RatingFeedback")
-design_size = Vector2(1280, 720)
 
-[node name="Root" type="Control" parent="."]
+[node name="Root" type="Control" parent="." unique_id=1064977845]
+custom_minimum_size = Vector2(1280, 720)
 layout_mode = 3
 anchors_preset = 0
 offset_left = -640.0
 offset_top = -360.0
 offset_right = 640.0
 offset_bottom = 360.0
-custom_minimum_size = Vector2(1280, 720)
 mouse_filter = 2
 
-[node name="PlayerHPBar" type="ProgressBar" parent="Root"]
+[node name="PlayerHPBar" type="ProgressBar" parent="Root" unique_id=1522564152]
 layout_mode = 1
 anchors_preset = -1
 offset_left = 24.0
 offset_top = 24.0
 offset_right = 344.0
 offset_bottom = 52.0
-max_value = 100.0
 value = 100.0
 show_percentage = false
 
-[node name="PlayerHPLabel" type="Label" parent="Root/PlayerHPBar"]
+[node name="PlayerHPLabel" type="Label" parent="Root/PlayerHPBar" unique_id=629333539]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PLAYER"
 horizontal_alignment = 1
 vertical_alignment = 1
-text = "PLAYER"
 
-[node name="EnemyHPBar" type="ProgressBar" parent="Root"]
+[node name="EnemyHPBar" type="ProgressBar" parent="Root" unique_id=588182441]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -53,20 +49,21 @@ offset_left = -344.0
 offset_top = 24.0
 offset_right = -24.0
 offset_bottom = 52.0
-max_value = 100.0
 value = 100.0
 show_percentage = false
 
-[node name="EnemyHPLabel" type="Label" parent="Root/EnemyHPBar"]
+[node name="EnemyHPLabel" type="Label" parent="Root/EnemyHPBar" unique_id=565998620]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "ENEMY"
 horizontal_alignment = 1
 vertical_alignment = 1
-text = "ENEMY"
 
-[node name="ScoreLabel" type="Label" parent="Root"]
+[node name="ScoreLabel" type="Label" parent="Root" unique_id=1195142958]
 layout_mode = 1
 anchors_preset = -1
 offset_left = 24.0
@@ -76,7 +73,7 @@ offset_bottom = 96.0
 theme_override_font_sizes/font_size = 22
 text = "Score: 0"
 
-[node name="ComboLabel" type="Label" parent="Root"]
+[node name="ComboLabel" type="Label" parent="Root" unique_id=1120566323]
 layout_mode = 1
 anchors_preset = -1
 offset_left = 24.0
@@ -86,35 +83,36 @@ offset_bottom = 144.0
 theme_override_font_sizes/font_size = 28
 text = "Combo: 0  (max 0)"
 
-[node name="RatingFeedback" type="Node" parent="Root"]
+[node name="RatingFeedback" type="Node" parent="Root" unique_id=161066017]
 script = ExtResource("2_rating")
-label_path = NodePath("../RatingLabel")
+perfect_texture = ExtResource("3_e1ng7")
+good_texture = ExtResource("4_tg0cx")
+miss_texture = ExtResource("5_sdk5g")
 texture_rect_path = NodePath("../RatingTexture")
 
-[node name="RatingLabel" type="Label" parent="Root"]
+[node name="TextureRect" type="TextureRect" parent="Root/RatingFeedback" unique_id=296439284]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RatingLabel" type="Label" parent="Root" unique_id=626976705]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.0
 anchor_right = 0.5
-anchor_bottom = 0.0
-offset_left = -200.0
-offset_top = 140.0
-offset_right = 200.0
-offset_bottom = 220.0
+offset_left = -198.0
+offset_top = 258.0
+offset_right = 202.0
+offset_bottom = 346.0
+theme_override_font_sizes/font_size = 64
 horizontal_alignment = 1
 vertical_alignment = 1
-theme_override_font_sizes/font_size = 64
-text = ""
 
-[node name="RatingTexture" type="TextureRect" parent="Root"]
+[node name="RatingTexture" type="TextureRect" parent="Root" unique_id=1269365301]
 visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.0
 anchor_right = 0.5
-anchor_bottom = 0.0
 offset_left = -160.0
 offset_top = 130.0
 offset_right = 160.0
