@@ -147,16 +147,16 @@ func on_enemy_hp_updated(hp: float, max_hp: float) -> void:
 func on_score_updated(score: int) -> void:
 	if _score_label == null:
 		return
-	_score_label.text = "Score: %d" % score
+	_score_label.text = "%d" % score
 
 
-func on_combo_updated(combo: int, max_combo: int) -> void:
+func on_combo_updated(combo: int, _max_combo: int) -> void:
 	if _combo_label == null:
 		return
 	if combo <= 0:
-		_combo_label.text = "Combo: 0  (max %d)" % max_combo
+		_combo_label.text = ""
 	else:
-		_combo_label.text = "Combo: x%d  (max %d)" % [combo, max_combo]
+		_combo_label.text = "x%d" % combo
 		_combo_label.pivot_offset = _combo_label.size / 2.0
 		_combo_label.scale = Vector2(combo_pop_scale, combo_pop_scale)
 		var tween: Tween = create_tween()
