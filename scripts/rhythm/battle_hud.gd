@@ -11,6 +11,21 @@ const ACTION_TO_DIRECTION: Dictionary = {
 }
 
 @export var notes_container: NodePath = NodePath("")
+@export var root_path: NodePath = NodePath("Root")
+@export var player_hp_bar_path: NodePath = NodePath("Root/PlayerHPBar")
+@export var enemy_hp_bar_path: NodePath = NodePath("Root/EnemyHPBar")
+@export var score_label_path: NodePath = NodePath("Root/ScoreLabel")
+@export var combo_label_path: NodePath = NodePath("Root/ComboLabel")
+@export var rating_feedback_path: NodePath = NodePath("Root/RatingFeedback")
+
+## Tamaño base de diseño del HUD. El Root Control se mantiene a este tamaño
+## en el editor para edición visual y se reescala al tamaño real del viewport
+## en runtime, conservando el layout por anchors.
+@export var design_size: Vector2 = Vector2(1280, 720)
+
+@export_group("Combo bounce")
+@export var combo_pop_scale: float = 1.5
+@export var combo_pop_seconds: float = 0.18
 
 var _arrow_queues: Dictionary = {
 	"note_left": [], "note_down": [], "note_up": [], "note_right": [],
@@ -21,9 +36,38 @@ var _lane_x: Dictionary = {}
 var _target_y: float = 0.0
 var arrow_travel_ms: float = 0.0
 
+var _root: Control
+var _player_hp_bar: ProgressBar
+var _enemy_hp_bar: ProgressBar
+var _score_label: Label
+var _combo_label: Label
+var _rating_feedback: RatingFeedback
+
 
 func _ready() -> void:
 	_notes_node = get_node(notes_container) as Node2D
+	_root = get_node_or_null(root_path) as Control
+	_player_hp_bar = get_node_or_null(player_hp_bar_path) as ProgressBar
+	_enemy_hp_bar = get_node_or_null(enemy_hp_bar_path) as ProgressBar
+	_score_label = get_node_or_null(score_label_path) as Label
+	_combo_label = get_node_or_null(combo_label_path) as Label
+	_rating_feedback = get_node_or_null(rating_feedback_path) as RatingFeedback
+	if _combo_label != null:
+		_combo_label.pivot_offset = _combo_label.size / 2.0
+	_fit_root_to_viewport()
+	get_viewport().size_changed.connect(_fit_root_to_viewport)
+
+
+# Mantiene el Root del HUD anclado al viewport real, conservando el design_size
+# como mínimo (para visibilidad en el editor). Los anchors de los hijos hacen
+# el resto del trabajo.
+func _fit_root_to_viewport() -> void:
+	if _root == null:
+		return
+	var vp_size: Vector2 = get_viewport().get_visible_rect().size
+	_root.custom_minimum_size = design_size
+	_root.size = vp_size
+	_root.position = Vector2.ZERO
 
 
 func setup_targets(left: NoteTarget, down: NoteTarget, up: NoteTarget, right: NoteTarget) -> void:
@@ -53,15 +97,22 @@ func _on_composer_note_expected(note: NoteData) -> void:
 	_arrow_queues[note.action].append(arrow)
 
 
-func _on_judge_note_result(player_action: String, expected_action: String, _timing: String, success: bool) -> void:
+func _on_judge_note_result(player_action: String, expected_action: String, timing: String, success: bool) -> void:
 	var flash_action: String = player_action if _targets.has(player_action) else expected_action
-	if not _targets.has(flash_action):
-		return
-	if success:
-		_targets[flash_action].flash_hit()
-		_consume_oldest_arrow(expected_action)
-	else:
-		_targets[flash_action].flash_miss()
+	if _targets.has(flash_action):
+		if success:
+			_targets[flash_action].flash_hit()
+			_consume_oldest_arrow(expected_action)
+		else:
+			_targets[flash_action].flash_miss()
+	if _rating_feedback != null:
+		_rating_feedback.on_note_result(player_action, expected_action, timing, success)
+
+
+# Conectado a PlayerInput.button_pressed para iluminar el target al presionar.
+func on_player_pressed(action: String) -> void:
+	if _targets.has(action):
+		_targets[action].flash_press()
 
 
 func _on_arrow_expired(action: String, arrow: NoteArrow) -> void:
@@ -75,3 +126,38 @@ func _consume_oldest_arrow(action: String) -> void:
 	var obj = queue.pop_front()
 	if is_instance_valid(obj):
 		(obj as NoteArrow).destroy()
+
+
+# ── Referee / EnemyGauge signal handlers ──────────────────
+
+func on_player_hp_updated(hp: int, max_hp: int) -> void:
+	if _player_hp_bar == null:
+		return
+	_player_hp_bar.max_value = max_hp
+	_player_hp_bar.value = hp
+
+
+func on_enemy_hp_updated(hp: float, max_hp: float) -> void:
+	if _enemy_hp_bar == null:
+		return
+	_enemy_hp_bar.max_value = max_hp
+	_enemy_hp_bar.value = hp
+
+
+func on_score_updated(score: int) -> void:
+	if _score_label == null:
+		return
+	_score_label.text = "%d" % score
+
+
+func on_combo_updated(combo: int, _max_combo: int) -> void:
+	if _combo_label == null:
+		return
+	if combo <= 0:
+		_combo_label.text = ""
+	else:
+		_combo_label.text = "x%d" % combo
+		_combo_label.pivot_offset = _combo_label.size / 2.0
+		_combo_label.scale = Vector2(combo_pop_scale, combo_pop_scale)
+		var tween: Tween = create_tween()
+		tween.tween_property(_combo_label, "scale", Vector2.ONE, combo_pop_seconds)

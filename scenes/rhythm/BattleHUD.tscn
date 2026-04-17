@@ -1,8 +1,180 @@
 [gd_scene format=3 uid="uid://battlehud001"]
 
-[ext_resource type="Script" path="res://scripts/rhythm/battle_hud.gd" id="1_hud"]
+[ext_resource type="Script" uid="uid://dmipmr0em8y82" path="res://scripts/rhythm/battle_hud.gd" id="1_hud"]
+[ext_resource type="Script" uid="uid://dmbbqnws5lunn" path="res://scripts/rhythm/rating_feedback.gd" id="2_rating"]
+[ext_resource type="FontFile" uid="uid://bfq87r32y4sf2" path="res://assets/fonts/Amanzinc Grafiti.ttf" id="2_tg0cx"]
+[ext_resource type="Texture2D" uid="uid://dow51mb1eicxf" path="res://assets/images/sprites/perfect.webp" id="3_e1ng7"]
+[ext_resource type="Texture2D" uid="uid://dnxy5s1lwxawj" path="res://assets/images/sprites/good.webp" id="4_tg0cx"]
+[ext_resource type="Texture2D" uid="uid://cyd55qdfmxmvh" path="res://assets/images/sprites/miss.webp" id="5_sdk5g"]
 
-[node name="BattleHUD" type="CanvasLayer"]
-layer = 1
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tg0cx"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.101960786, 0.101960786, 0.101960786, 0)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sdk5g"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0.9882353, 0, 0.69803923)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_35nd0"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 1, 1, 0)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dw7ho"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_right = 2.0
+content_margin_bottom = 2.0
+bg_color = Color(0.78039217, 0.007843138, 0, 0.8784314)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[node name="BattleHUD" type="CanvasLayer" unique_id=641040789]
 script = ExtResource("1_hud")
-notes_container = NodePath("")
+score_label_path = NodePath("Root/Node2D/ScoreLabel")
+combo_label_path = NodePath("Root/Node2D/ComboLabel")
+
+[node name="Root" type="Control" parent="." unique_id=1064977845]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -643.0
+offset_top = -361.0
+offset_right = 637.0
+offset_bottom = 359.0
+mouse_filter = 2
+
+[node name="PlayerHPBar" type="ProgressBar" parent="Root" unique_id=1522564152]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 344.0
+offset_bottom = 52.0
+theme_override_styles/background = SubResource("StyleBoxFlat_tg0cx")
+theme_override_styles/fill = SubResource("StyleBoxFlat_sdk5g")
+value = 100.0
+show_percentage = false
+
+[node name="PlayerHPLabel" type="Label" parent="Root/PlayerHPBar" unique_id=629333539]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_tg0cx")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemyHPBar" type="ProgressBar" parent="Root" unique_id=588182441]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -344.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 52.0
+theme_override_styles/background = SubResource("StyleBoxFlat_35nd0")
+theme_override_styles/fill = SubResource("StyleBoxFlat_dw7ho")
+value = 100.0
+show_percentage = false
+
+[node name="EnemyHPLabel" type="Label" parent="Root/EnemyHPBar" unique_id=565998620]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Node2D" type="Node2D" parent="Root" unique_id=1504510280]
+position = Vector2(569, -49)
+
+[node name="ScoreLabel" type="Label" parent="Root/Node2D" unique_id=1195142958]
+anchors_preset = -1
+offset_left = -23.0
+offset_top = 62.0
+offset_right = 167.0
+offset_bottom = 121.0
+theme_override_fonts/font = ExtResource("2_tg0cx")
+theme_override_font_sizes/font_size = 50
+text = "999999"
+horizontal_alignment = 1
+
+[node name="ComboLabel" type="Label" parent="Root/Node2D" unique_id=1120566323]
+anchors_preset = -1
+offset_left = -20.0
+offset_top = 109.0
+offset_right = 165.0
+offset_bottom = 153.0
+theme_override_fonts/font = ExtResource("2_tg0cx")
+theme_override_font_sizes/font_size = 28
+text = "x2"
+horizontal_alignment = 1
+
+[node name="RatingFeedback" type="Node" parent="Root" unique_id=161066017]
+script = ExtResource("2_rating")
+perfect_texture = ExtResource("3_e1ng7")
+good_texture = ExtResource("4_tg0cx")
+miss_texture = ExtResource("5_sdk5g")
+texture_rect_path = NodePath("../RatingTexture")
+
+[node name="TextureRect" type="TextureRect" parent="Root/RatingFeedback" unique_id=296439284]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RatingLabel" type="Label" parent="Root" unique_id=626976705]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -198.0
+offset_top = 258.0
+offset_right = 202.0
+offset_bottom = 346.0
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RatingTexture" type="TextureRect" parent="Root" unique_id=1269365301]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = 130.0
+offset_right = 160.0
+offset_bottom = 250.0
+expand_mode = 1
+stretch_mode = 5

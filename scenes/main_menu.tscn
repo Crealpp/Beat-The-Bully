@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c2vofxbu0grm1"]
 
-[ext_resource type="Script" uid="uid://demuroij8rx4b" path="res://assets/Scripts/main_menu.gd" id="1_d2ryq"]
-[ext_resource type="Texture2D" uid="uid://cu7k1ro8ox1t0" path="res://assets/images/menu/reference.png" id="2_x3et2"]
+[ext_resource type="Script" uid="uid://demuroij8rx4b" path="res://scripts/main_menu.gd" id="1_ekxnf"]
+[ext_resource type="Texture2D" uid="uid://dnftujk4u2hoy" path="res://assets/images/menu/reference.png" id="2_bqqt6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cfbao"]
 bg_color = Color(1, 1, 1, 1)
@@ -79,12 +79,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_d2ryq")
+script = ExtResource("1_ekxnf")
 
 [node name="Reference" type="Sprite2D" parent="." unique_id=586560208]
 position = Vector2(639.5555, 357.99997)
 scale = Vector2(0.6666667, 0.6666667)
-texture = ExtResource("2_x3et2")
+texture = ExtResource("2_bqqt6")
 
 [node name="Start" type="Button" parent="." unique_id=2130309233]
 layout_mode = 0

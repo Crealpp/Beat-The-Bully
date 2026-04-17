@@ -21,8 +21,8 @@
 
 ## 🏗️ Requisitos Técnicos (Materia POO)
 
-- [x] Mínimo **5 clases (TAD)** de autoría propia — ✅ 7 clases implementadas en `scripts/rhythm/`
-- [x] Al menos **1 patrón de diseño** (Sin contar Singleton, Prototype ni Module) — ✅ Observer (señales de Godot)
+- [x] Mínimo **5 clases (TAD)** de autoría propia — ✅ 12 clases implementadas en `scripts/rhythm/`
+- [ ] Al menos **1 patrón de diseño** (Sin contar Singleton, Prototype ni Module)
 - [ ] **Interfaz gráfica** obligatoria (Godot UI)
 - [ ] **Componente aleatorio** 
 - [ ] **Componente inclusivo** (subtítulos, modos de accesibilidad, selección de avatar)
@@ -40,8 +40,9 @@ feria-gamer-game/
 ├── assets/          # Sprites, audio, fuentes, videos
 ├── scenes/          # Escenas Godot (.tscn)
 ├── scripts/         # GDScript (.gd) — lógica del juego
-│   └── rhythm/      # Sistema de ritmo: 7 clases (NoteData, PlayerInput, MusicPlayer,
-│                    #   Metronome, Composer, Judge, Referee)
+│   └── rhythm/      # Sistema de ritmo: 12 clases (NoteData, PlayerInput, MusicPlayer,
+│                    #   Metronome, Composer, Judge, Referee, ScoreRules,
+│                    #   HealthRules, EnemyGauge, RatingFeedback, LoseScreen)
 ├── resources/       # Temas, shaders, materiales, datos
 ├── addons/          # Plugins de Godot (Asset Library)
 ├── tests/           # Tests unitarios / integración
@@ -61,9 +62,9 @@ feria-gamer-game/
 
 ## 🎵 Rhythm System — Implemented Classes
 
-All 7 classes are in `scripts/rhythm/`. They follow SOLID principles and communicate
-exclusively via signals (Observer pattern), except MusicPlayer → Metronome which uses
-a direct `update_time(ms)` call by design.
+All classes are in `scripts/rhythm/`. They follow SOLID principles and communicate
+mainly through Godot signals; `MusicPlayer → Metronome` and `Battle → EnemyGauge`
+use direct method calls by design.
 
 | File | Class | Base | Role |
 |------|-------|------|------|
@@ -73,6 +74,13 @@ a direct `update_time(ms)` call by design.
 | `metronome.gd` | Metronome | Node | Beat tracking + timing eval |
 | `composer.gd` | Composer | Node | Chart management |
 | `judge.gd` | Judge | Node | Action validation |
-| `referee.gd` | Referee | Node | HP / score / combo |
+| `referee.gd` | Referee | Node | Player HP / score / combo (data-driven) |
+| `score_rules.gd` | ScoreRules | Resource | Tunable score values (editor) |
+| `health_rules.gd` | HealthRules | Resource | Tunable HP values (editor) |
+| `enemy_gauge.gd` | EnemyGauge | Node | Scripted enemy HP (song progress) |
+| `rating_feedback.gd` | RatingFeedback | Node | Popup PERFECT/GOOD/MISS (text or image) |
+| `lose_screen.gd` | LoseScreen | CanvasLayer | Defeat overlay with retry / menu |
 
-Signal flow: `MusicPlayer` → `Metronome` → `Composer` → `Judge` → `Referee` → UI
+Signal flow: `MusicPlayer` → `Metronome` → `Composer` → `Judge` → `Referee` → UI.
+`Battle` drives `EnemyGauge.update_song_progress()` each frame.
+Tunables live in `assets/rules/*.tres` and are assigned to `Referee` in the Inspector.

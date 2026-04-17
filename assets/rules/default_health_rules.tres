@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="HealthRules" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/rhythm/health_rules.gd" id="1_healthrules"]
+
+[resource]
+script = ExtResource("1_healthrules")
+max_player_hp = 100
+miss_damage = 10
+perfect_heal = 0
+good_heal = 0
