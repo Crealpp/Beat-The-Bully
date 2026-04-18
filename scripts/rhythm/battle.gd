@@ -2,8 +2,15 @@ class_name ScBattle
 extends Node2D
 
 @export var chart_path: String = "res://assets/charts/test_chart.json"
-@export_file("*.tscn") var lose_scene_path: String = "res://scenes/rhythm/LoseScreen.tscn"
+## Pantalla intermedia al perder. Dejar vacío = volver directo al Map
+## (Gamemanager.return_scene_path) y dejar que el NPC reproduzca su
+## `lose_dialogue_id`. Poner una ruta = mostrar LoseScreen con Retry/Menú.
+@export_file("*.tscn") var lose_scene_path: String = ""
+## Pantalla intermedia al ganar. Misma regla: vacío = Map directo.
 @export_file("*.tscn") var win_scene_path: String = "res://scenes/rhythm/WinScreen.tscn"
+## Fallback para cuando no hay `return_scene_path` (ej. entraste a Battle.tscn
+## directo sin pasar por el Map vía un Interactable).
+@export_file("*.tscn") var fallback_map_scene_path: String = "res://scenes/map/Map.tscn"
 
 # Se calcula dinámicamente desde las posiciones reales de los targets.
 var _arrow_travel_ms: float = 0.0
@@ -163,9 +170,23 @@ func _on_level_ended(player_won: bool) -> void:
 	# seteados por el Interactable antes de lanzar la batalla.
 	if player_won:
 		Gamemanager.pending_dialogue_result = "win"
-		if win_scene_path != "":
-			get_tree().change_scene_to_file(win_scene_path)
+		_go_to_post_battle(win_scene_path)
 	else:
 		Gamemanager.pending_dialogue_result = "lose"
-		if lose_scene_path != "":
-			get_tree().change_scene_to_file(lose_scene_path)
+		_go_to_post_battle(lose_scene_path)
+
+
+# Prioridad: pantalla intermedia explícita > return_scene_path (seteado por el
+# Interactable que lanzó la batalla) > fallback al Map directo. De esta forma,
+# dejar `lose_scene_path = ""` hace que la derrota vuelva al mapa y el NPC
+# reproduzca su `lose_dialogue_id` sin pantalla intermedia.
+func _go_to_post_battle(intermediate_path: String) -> void:
+	var target: String = intermediate_path
+	if target == "":
+		target = Gamemanager.return_scene_path
+	if target == "":
+		target = fallback_map_scene_path
+	if target == "":
+		push_warning("ScBattle: no hay escena destino post-batalla.")
+		return
+	get_tree().change_scene_to_file(target)

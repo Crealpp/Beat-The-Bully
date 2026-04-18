@@ -1,19 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://intractaaaaa1"]
+[gd_scene format=3 uid="uid://w0027yq4uiri"]
 
-[ext_resource type="Script" path="res://scripts/dialogue/interactable.gd" id="1_intr"]
-[ext_resource type="Texture2D" uid="uid://c6r73vs8a0g5i" path="res://assets/images/sprites/cartel.jpg" id="2_tex"]
+[ext_resource type="Script" uid="uid://uv2v2rcs4htf" path="res://scripts/dialogue/interactable.gd" id="1_intr"]
+[ext_resource type="SpriteFrames" uid="uid://bge26j1oybjcs" path="res://assets/images/sprites/idlepj2.tres" id="2_luefm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_intr"]
 size = Vector2(96, 96)
 
-[node name="Interactable" type="Area2D"]
+[node name="Interactable" type="Area2D" unique_id=878503726]
 script = ExtResource("1_intr")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1889423936]
 shape = SubResource("RectangleShape2D_intr")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.1, 0.07)
-texture = ExtResource("2_tex")
-region_enabled = true
-region_rect = Rect2(216, 248, 648, 752)
+[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=858663745]
+scale = Vector2(0.1, 0.09571871)
+sprite_frames = ExtResource("2_luefm")
+animation = &"Idle"

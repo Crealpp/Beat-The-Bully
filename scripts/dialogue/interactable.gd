@@ -46,6 +46,10 @@ const INTERACT_ACTION := "Interact"
 ## Por defecto apunta a un hermano del Map llamado "DialogueRunner".
 @export var dialogue_runner_path: NodePath = NodePath("../DialogueRunner")
 
+# Nota: la apariencia (sprite / spritesheet / animación) se personaliza por
+# instancia vía "Editable Children" sobre el Sprite2D o AnimatedSprite2D hijo.
+# Ver comentario en docs del proyecto.
+
 var _player_in_range: bool = false
 var _data: DialogueLoader.DialogueData = null
 var _runner: DialogueRunner = null
@@ -95,6 +99,7 @@ func play_result_dialogue(result: String) -> void:
 
 
 # ── Interno ────────────────────────────────────────────────
+
 
 func _start_intro() -> void:
 	if _data == null or _runner == null:
