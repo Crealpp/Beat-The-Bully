@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://intractaaaaa1"]
+
+[ext_resource type="Script" path="res://scripts/dialogue/interactable.gd" id="1_intr"]
+[ext_resource type="Texture2D" uid="uid://c6r73vs8a0g5i" path="res://assets/images/sprites/cartel.jpg" id="2_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_intr"]
+size = Vector2(96, 96)
+
+[node name="Interactable" type="Area2D"]
+script = ExtResource("1_intr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_intr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.07)
+texture = ExtResource("2_tex")
+region_enabled = true
+region_rect = Rect2(216, 248, 648, 752)

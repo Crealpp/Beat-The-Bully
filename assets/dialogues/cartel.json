@@ -1,0 +1,11 @@
+{
+	"version": 1,
+	"dialogues": {
+		"intro": {
+			"lines": [
+				{ "text": "Feria Gamer 2026 — Zona de batallas rítmicas." },
+				{ "text": "Presiona las flechas al ritmo de la música." }
+			]
+		}
+	}
+}

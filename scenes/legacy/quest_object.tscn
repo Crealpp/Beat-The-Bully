@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ds3e1ror3pfnl"]
 
-[ext_resource type="Script" uid="uid://dt8ytiu0bsxyq" path="res://scenes/quest_object.gd" id="1_wxw3n"]
+[ext_resource type="Script" uid="uid://dt8ytiu0bsxyq" path="res://scenes/legacy/quest_object.gd" id="1_wxw3n"]
 [ext_resource type="Texture2D" uid="uid://c6r73vs8a0g5i" path="res://assets/images/sprites/cartel.jpg" id="2_qe2v8"]
 
 

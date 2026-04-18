@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://csq1t4ajb3h5x"]
 
-[ext_resource type="SpriteFrames" uid="uid://btgbdrv3gb6xj" path="res://scenes/Playerbattle1.tres" id="1_dldwo"]
+[ext_resource type="SpriteFrames" uid="uid://btgbdrv3gb6xj" path="res://scenes/legacy_battle/Playerbattle1.tres" id="1_dldwo"]
 
 [node name="PlayerBattle" type="CharacterBody2D" unique_id=323566821]
 

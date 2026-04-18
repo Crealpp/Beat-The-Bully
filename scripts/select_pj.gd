@@ -12,13 +12,13 @@ func _process(delta: float) -> void:
 
 
 func _on_back_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/map.tscn")
+	get_tree().change_scene_to_file("res://scenes/map/Map.tscn")
 	pass # Replace with function body.
 
 
 func selectedskin(skinname) -> void:
 	Gamemanager.selectedskin = skinname
-	get_tree().change_scene_to_file("res://scenes/map.tscn")
+	get_tree().change_scene_to_file("res://scenes/map/Map.tscn")
 
 func _on_button_pressed() -> void:
 	selectedskin("idle (1)")

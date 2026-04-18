@@ -16,11 +16,11 @@ func _on_exit_pressed() -> void:
 
 
 func _on_options_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/select_pj.tscn")
+	get_tree().change_scene_to_file("res://scenes/menu/select_pj.tscn")
 
 
 func _on_start_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/select_pj.tscn")
+	get_tree().change_scene_to_file("res://scenes/menu/select_pj.tscn")
 
 
 func _on_back_pressed() -> void:

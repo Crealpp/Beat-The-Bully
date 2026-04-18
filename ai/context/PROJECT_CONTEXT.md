@@ -40,9 +40,12 @@ feria-gamer-game/
 ├── assets/          # Sprites, audio, fuentes, videos
 ├── scenes/          # Escenas Godot (.tscn)
 ├── scripts/         # GDScript (.gd) — lógica del juego
-│   └── rhythm/      # Sistema de ritmo: 12 clases (NoteData, PlayerInput, MusicPlayer,
-│                    #   Metronome, Composer, Judge, Referee, ScoreRules,
-│                    #   HealthRules, EnemyGauge, RatingFeedback, LoseScreen)
+│   ├── rhythm/      # Sistema de ritmo: 13 clases (NoteData, PlayerInput, MusicPlayer,
+│   │                #   Metronome, Composer, Judge, Referee, ScoreRules,
+│   │                #   HealthRules, EnemyGauge, RatingFeedback, LoseScreen,
+│   │                #   WinScreen)
+│   └── dialogue/    # Sistema de diálogo: 4 clases (DialogueLoader + DialogueData
+│                    #   + DialogueLine, DialogueBox, DialogueRunner, Interactable)
 ├── resources/       # Temas, shaders, materiales, datos
 ├── addons/          # Plugins de Godot (Asset Library)
 ├── tests/           # Tests unitarios / integración
@@ -79,8 +82,31 @@ use direct method calls by design.
 | `health_rules.gd` | HealthRules | Resource | Tunable HP values (editor) |
 | `enemy_gauge.gd` | EnemyGauge | Node | Scripted enemy HP (song progress) |
 | `rating_feedback.gd` | RatingFeedback | Node | Popup PERFECT/GOOD/MISS (text or image) |
-| `lose_screen.gd` | LoseScreen | CanvasLayer | Defeat overlay with retry / menu |
+| `lose_screen.gd` | LoseScreen | Control | Defeat scene: Retry / Return to Map / Main menu |
+| `win_screen.gd` | WinScreen | Control | Victory scene with Continue button back to Map |
 
 Signal flow: `MusicPlayer` → `Metronome` → `Composer` → `Judge` → `Referee` → UI.
 `Battle` drives `EnemyGauge.update_song_progress()` each frame.
 Tunables live in `assets/rules/*.tres` and are assigned to `Referee` in the Inspector.
+
+## 💬 Dialogue System — Implemented Classes
+
+All classes are in `scripts/dialogue/`. Pokemon-style: JSON-driven, attachable
+to NPCs and objects through a single `Interactable` class. Signal-driven.
+
+| File | Class | Base | Role |
+|------|-------|------|------|
+| `dialogue_loader.gd` | DialogueLoader + DialogueData + DialogueLine | RefCounted | Static JSON → data parser (mirrors ChartLoader) |
+| `dialogue_box.gd` | DialogueBox | Control | Pure view: speaker + text + advance hint |
+| `dialogue_runner.gd` | DialogueRunner | Node | Sequences lines, emits dialogue_started / dialogue_finished |
+| `interactable.gd` | Interactable | Area2D | NPC or object; triggers dialogue and optionally a battle |
+
+`DialogueRunner` instance lives as a child of `Map` (single runner per scene).
+`Interactable` instances self-register to group `"interactables"` and are
+looked up by `id` on post-battle return to replay win/lose dialogues.
+
+Cross-scene state (return path, position, pending NPC id, battle result) lives
+in the `Gamemanager` autoload.
+
+Dialogue JSON lives in `assets/dialogues/*.json`; schema supports multiple
+named dialogues per file (intro / victory / defeat / etc.).

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bfrd2511qx8cd"]
 
-[ext_resource type="Script" uid="uid://cs033al1h1ruy" path="res://scenes/opciones.gd" id="1_rereo"]
+[ext_resource type="Script" uid="uid://cs033al1h1ruy" path="res://scenes/menu/opciones.gd" id="1_rereo"]
 
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jgi07"]
