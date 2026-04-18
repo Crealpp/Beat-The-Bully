@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://t7rlqav6ica0"
-path="res://.godot/imported/tarjet.webp-ce23f2cc86ed2fbd4c08f84cf6fe2a6b.ctex"
+uid="uid://csdgn4rbhbyqc"
+path="res://.godot/imported/outline_arrow.png-ccaf8d088e2e93edd521b27383a8ebf9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/sprites/tarjet.webp"
-dest_files=["res://.godot/imported/tarjet.webp-ce23f2cc86ed2fbd4c08f84cf6fe2a6b.ctex"]
+source_file="res://assets/images/sprites/outline_arrow.png"
+dest_files=["res://.godot/imported/outline_arrow.png-ccaf8d088e2e93edd521b27383a8ebf9.ctex"]
 
 [params]
 
