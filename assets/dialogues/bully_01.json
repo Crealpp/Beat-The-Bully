@@ -1,0 +1,25 @@
+{
+	"version": 1,
+	"dialogues": {
+		"intro": {
+			"lines": [
+				{ "speaker": "Matón", "text": "¿Crees que puedes ganarme a mí?" },
+				{ "speaker": "Matón", "text": "Ja... vamos a ver si el ritmo te acompaña." },
+				{ "speaker": "Jugador", "text": "No te tengo miedo." },
+				{ "speaker": "Matón", "text": "¡Prepárate!" }
+			]
+		},
+		"victory": {
+			"lines": [
+				{ "speaker": "Matón", "text": "Imposible... ¿cómo me ganaste?" },
+				{ "speaker": "Matón", "text": "Está bien. Te dejaré en paz." }
+			]
+		},
+		"defeat": {
+			"lines": [
+				{ "speaker": "Matón", "text": "Ja. Vuelve cuando practiques más." },
+				{ "speaker": "Matón", "text": "Este patio es mío." }
+			]
+		}
+	}
+}

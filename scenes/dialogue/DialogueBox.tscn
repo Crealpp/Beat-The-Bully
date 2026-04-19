@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://dlgboxaaaaaa1"]
+
+[ext_resource type="Script" uid="uid://bx537q2gj0rxu" path="res://scripts/dialogue/dialogue_box.gd" id="1_dbox"]
+[ext_resource type="FontFile" uid="uid://dye7jmtmy4vqr" path="res://assets/fonts/Retro Pixel.otf" id="2_gbb6a"]
+[ext_resource type="FontFile" uid="uid://f2r6c64a0i6v" path="res://assets/fonts/RetroBound.ttf" id="3_qtmnj"]
+[ext_resource type="FontFile" uid="uid://dkhuvr1inqnvv" path="res://assets/fonts/RetroBoundUC.ttf" id="4_ch5tr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shq2c"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="DialogueBox" type="Control" unique_id=1470755022]
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -220.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_dbox")
+
+[node name="Panel" type="PanelContainer" parent="." unique_id=80670880]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 32.0
+offset_top = 16.0
+offset_right = -32.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_shq2c")
+
+[node name="Margin" type="MarginContainer" parent="Panel" unique_id=1111093363]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 18
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Margin" unique_id=2084625502]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="SpeakerLabel" type="Label" parent="Panel/Margin/VBox" unique_id=877404858]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_fonts/font = ExtResource("2_gbb6a")
+theme_override_font_sizes/font_size = 34
+text = "Speaker"
+
+[node name="TextLabel" type="Label" parent="Panel/Margin/VBox" unique_id=1110868691]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_qtmnj")
+theme_override_font_sizes/font_size = 28
+text = "Lorem ipsum dolor sit amet."
+autowrap_mode = 2
+
+[node name="HintLabel" type="Label" parent="Panel/Margin/VBox" unique_id=1448417048]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.75, 1)
+theme_override_fonts/font = ExtResource("4_ch5tr")
+theme_override_font_sizes/font_size = 18
+text = "[Space / Enter] para continuar"
+horizontal_alignment = 2

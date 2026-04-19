@@ -43,9 +43,16 @@ func flash_miss() -> void:
 
 
 func _flash(color: Color) -> void:
+	# Guard: el target podría estar fuera del árbol si la escena ya está
+	# cambiando (derrota/victoria). get_tree() devuelve null en ese caso.
+	if not is_inside_tree():
+		return
 	_flash_token += 1
 	var token: int = _flash_token
 	modulate = color
 	await get_tree().create_timer(flash_seconds).timeout
+	# Tras el await puede que ya no estemos en el árbol.
+	if not is_inside_tree():
+		return
 	if token == _flash_token:
 		modulate = idle_color

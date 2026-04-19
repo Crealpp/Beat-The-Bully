@@ -55,6 +55,11 @@ custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 text = "Reintentar"
 
+[node name="MapButton" type="Button" parent="Panel/VBox"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+text = "Volver al mapa"
+
 [node name="MenuButton" type="Button" parent="Panel/VBox"]
 custom_minimum_size = Vector2(0, 56)
 layout_mode = 2

@@ -229,4 +229,89 @@ futura.
 
 ---
 
+### 2026-04-18 — Sistema de Diálogo + Round-trip Map↔Batalla
+**Contexto:** La escena `Map.tscn` sólo tenía un `quest_object` (Area2D) que,
+al interactuar, lanzaba directamente `change_scene_to_file(Battle.tscn)`. No
+existían diálogos, NPCs, ni camino de vuelta desde la batalla al Map (la
+victoria era un dead-end en `battle.gd`). Se necesitaba un sistema estilo
+Pokemon que cargara líneas desde JSON, pudiera colgarse tanto a NPCs como a
+objetos, disparara batallas y conectara los tres resultados posibles
+(victoria / derrota / objeto-sin-batalla) de vuelta al Map.
+
+**Opciones consideradas:**
+- Clases separadas `NPC` + `InteractableObject` (expresividad).
+- Una única clase `Interactable` que decide por `@export` (simplicidad LSP).
+- Disparo de batalla codificado en el JSON (`on_finish: start_battle`) vs
+  codificado en el nodo de la escena.
+- Regreso a Map: pantalla intermedia de victoria (WinScreen) vs volver
+  directo al Map con el NPC reproduciendo su diálogo de victoria.
+
+**Decisión tomada:**
+- **Una sola clase `Interactable`** (Area2D). Si `battle_scene_path` está
+  vacío, sólo dialoga; si está seteado, tras la intro dispara la batalla.
+- **El disparo de batalla vive en el nodo**, no en el JSON. El JSON describe
+  qué se dice; la escena decide qué hacer. OCP-friendly para futuros
+  comportamientos post-diálogo (dar item, abrir tienda, etc.).
+- **WinScreen intermedio** con botón "Continuar" que vuelve al Map; allí el
+  NPC reproduce automáticamente su `win_dialogue_id`.
+- **LoseScreen** gana un botón "Volver al mapa" (además de Retry y Menú).
+  Se arregla el default roto de `menu_scene_path`
+  (`res://assets/Scenes/main_menu.tscn` → `res://scenes/main_menu.tscn`).
+- **Tecla de avance**: `ui_accept` (Space/Enter). `Interact` (E) queda
+  reservado para iniciar la interacción — evita que el mismo frame abra y
+  avance la primera línea.
+- **Bloqueo de input del Player** vía `can_move` boolean toggled por señales
+  `dialogue_started` / `dialogue_finished` (no `get_tree().paused`, porque
+  queremos animaciones de fondo y preservar SRP en el Player).
+- **Gamemanager** (autoload existente) gana 4 campos cross-scene:
+  `return_scene_path`, `return_position`, `pending_npc_id`,
+  `pending_dialogue_result`, más `clear_pending_dialogue()`. No hace falta
+  autoload nuevo — Gamemanager ya es el store de run-state.
+- **Typewriter diferido** — revelado instantáneo en v1. La arquitectura
+  queda lista para añadirlo con un Tween cuando se quiera.
+
+**Flujo end-to-end:**
+1. Player camina hasta Interactable → presiona E → DialogueRunner reproduce
+   el `intro_dialogue_id`.
+2. Al terminar, si hay `battle_scene_path`: Interactable persiste id / posición
+   / ruta de retorno en Gamemanager y cambia a Battle.
+3. Battle detecta resultado (win/lose), lo persiste en
+   `Gamemanager.pending_dialogue_result` y cambia a WinScreen (si ganó) o
+   LoseScreen (si perdió).
+4. WinScreen → "Continuar" → Map. LoseScreen → "Volver al mapa" → Map.
+5. Map `_ready` (deferred) lee Gamemanager, teleporta al Player a
+   `return_position`, busca el Interactable por id en el grupo
+   `"interactables"` y llama `play_result_dialogue(result)`.
+6. Al terminar, `clear_pending_dialogue()`.
+
+**Consecuencias:**
+- (+) SRP: Loader parsea, Box renderiza, Runner secuencia, Interactable
+  decide, Gamemanager persiste.
+- (+) OCP: nuevos comportamientos post-diálogo se añaden extendiendo el
+  handler de `dialogue_finished`, sin tocar Runner ni el schema JSON.
+- (+) LSP: objetos y NPCs comparten clase; sólo difieren en `@export`.
+- (+) DIP: Battle depende de `Gamemanager.return_scene_path` (abstracción),
+  no hardcodea Map.tscn.
+- (+) Escalable: añadir un nuevo NPC = instancia `Interactable.tscn` +
+  nuevo JSON. Sin código nuevo.
+- (-) `quest_object.gd/.tscn` quedan como template muerto (removidos en un
+  commit posterior).
+
+**Archivos creados:**
+`scripts/dialogue/dialogue_loader.gd`, `scripts/dialogue/dialogue_box.gd`,
+`scripts/dialogue/dialogue_runner.gd`, `scripts/dialogue/interactable.gd`,
+`scripts/rhythm/win_screen.gd`, `scripts/map.gd`,
+`scenes/dialogue/DialogueBox.tscn`, `scenes/dialogue/DialogueRunner.tscn`,
+`scenes/dialogue/Interactable.tscn`, `scenes/rhythm/WinScreen.tscn`,
+`assets/dialogues/bully_01.json`, `assets/dialogues/cartel.json`.
+
+**Archivos modificados:**
+`scripts/gamemanager.gd`, `scripts/Player.gd`, `scripts/rhythm/battle.gd`,
+`scripts/rhythm/lose_screen.gd`, `scenes/rhythm/LoseScreen.tscn`,
+`scenes/Map.tscn`.
+
+**Asistida por IA:** Sí — Claude Sonnet 4.6
+
+---
+
 <!-- Agrega nuevas decisiones aquí -->

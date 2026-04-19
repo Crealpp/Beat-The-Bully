@@ -9,7 +9,7 @@ extends Node
 @export_group("Animación")
 @export var display_seconds: float = 0.55
 @export var pop_scale: float = 1.25
-@export var base_scale: float = 2.5   # 🔥 tamaño base (AJUSTA AQUÍ)
+@export var base_scale: float = 2.5
 
 @export_group("Nodo UI")
 @export var texture_rect_path: NodePath
@@ -22,7 +22,7 @@ func _ready() -> void:
 	_texture_rect = get_node(texture_rect_path) as TextureRect
 	_texture_rect.visible = false
 
-	# 🔥 tamaño y centrado SIEMPRE
+
 	_texture_rect.scale = Vector2(base_scale, base_scale)
 	_texture_rect.pivot_offset = _texture_rect.size / 2.0
 
@@ -34,6 +34,11 @@ func on_note_result(_player_action: String, _expected_action: String, timing: St
 
 
 func _show_rating(rating: String) -> void:
+	# Guard: el HUD podría recibir un `note_result` tardío (auto-miss) justo
+	# cuando la escena está cambiando a Lose/Win. En ese caso el nodo ya no
+	# está en el árbol y `get_tree()` / `create_tween()` fallan.
+	if not is_inside_tree() or _texture_rect == null:
+		return
 
 	var tex: Texture2D
 
@@ -51,10 +56,10 @@ func _show_rating(rating: String) -> void:
 	_texture_rect.texture = tex
 	_texture_rect.visible = true
 
-	# 🔥 asegurar tamaño base SIEMPRE (evita que se agrande raro)
+
 	_texture_rect.scale = Vector2(base_scale, base_scale)
 
-	# 🔥 animación ORIGINAL (pero controlada)
+
 	var tween: Tween = create_tween()
 	_texture_rect.scale = Vector2(base_scale * pop_scale, base_scale * pop_scale)
 	tween.tween_property(_texture_rect, "scale", Vector2(base_scale, base_scale), 0.18)
@@ -64,5 +69,8 @@ func _show_rating(rating: String) -> void:
 
 	await get_tree().create_timer(display_seconds).timeout
 
+	# Tras el await la escena pudo haber cambiado.
+	if not is_inside_tree() or _texture_rect == null:
+		return
 	if token == _hide_token:
 		_texture_rect.visible = false
