@@ -42,7 +42,7 @@ func _on_retry_pressed() -> void:
 
 
 func _on_map_pressed() -> void:
-	var target := Gamemanager.return_scene_path
+	var target: String = Gamemanager.return_scene_path
 	if target.is_empty():
 		target = fallback_map_scene_path
 	get_tree().change_scene_to_file(target)

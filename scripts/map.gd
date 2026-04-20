@@ -49,8 +49,8 @@ func _resume_post_battle_dialogue_deferred() -> void:
 
 
 func _resume_post_battle_dialogue() -> void:
-	var result := Gamemanager.pending_dialogue_result
-	var npc_id := Gamemanager.pending_npc_id
+	var result: String = Gamemanager.pending_dialogue_result
+	var npc_id: String = Gamemanager.pending_npc_id
 	if result.is_empty() or npc_id.is_empty():
 		return
 

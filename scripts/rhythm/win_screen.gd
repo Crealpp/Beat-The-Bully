@@ -24,7 +24,7 @@ func _ready() -> void:
 
 
 func _on_continue_pressed() -> void:
-	var target := Gamemanager.return_scene_path
+	var target: String = Gamemanager.return_scene_path
 	if target.is_empty():
 		target = fallback_scene_path
 	get_tree().change_scene_to_file(target)
