@@ -40,7 +40,7 @@ func _ready() -> void:
 
 func _connect_ui() -> void:
 	_quest_list.item_selected.connect(_on_quest_selected)
-	_quest_list.nothing_selected.connect(_on_nothing_selected)
+	_quest_list.empty_clicked.connect(_on_quest_list_empty_clicked)
 
 	_new_button.pressed.connect(_on_new_pressed)
 	_delete_button.pressed.connect(_on_delete_pressed)
@@ -102,7 +102,8 @@ func _refresh_form() -> void:
 	_visibility_option.disabled = not has_selection
 	_progress_option.disabled = not has_selection
 	_description_edit.editable = has_selection
-	_prereq_list.disabled = not has_selection
+	_prereq_list.mouse_filter = Control.MOUSE_FILTER_STOP if has_selection else Control.MOUSE_FILTER_IGNORE
+	_prereq_list.focus_mode = Control.FOCUS_ALL if has_selection else Control.FOCUS_NONE
 
 	if not has_selection:
 		_id_edit.text = ""
@@ -111,6 +112,7 @@ func _refresh_form() -> void:
 		_visibility_option.select(Quest.QuestState.OCULTA)
 		_progress_option.select(Quest.QuestState.DESACTIVADA)
 		_prereq_list.clear()
+		_prereq_list.deselect_all()
 		_syncing_ui = false
 		return
 
@@ -157,7 +159,7 @@ func _on_quest_selected(index: int) -> void:
 	_refresh_buttons_state()
 
 
-func _on_nothing_selected() -> void:
+func _on_quest_list_empty_clicked(_at_position: Vector2, _mouse_button_index: int) -> void:
 	_selected_idx = -1
 	_refresh_form()
 	_refresh_buttons_state()

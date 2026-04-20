@@ -1,4 +1,3 @@
-class_name QuestManager
 extends Node
 
 signal quest_activated(quest_id: String)
