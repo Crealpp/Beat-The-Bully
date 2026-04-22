@@ -66,9 +66,11 @@ func _connect_ui() -> void:
 func _populate_state_options() -> void:
 	_visibility_option.clear()
 	_progress_option.clear()
+	for i in range(Quest.QuestVisibility.size()):
+		var label: String = str(Quest.QuestVisibility.keys()[i]).capitalize()
+		_visibility_option.add_item(label, i)
 	for i in range(Quest.QuestState.size()):
 		var label: String = str(Quest.QuestState.keys()[i]).capitalize()
-		_visibility_option.add_item(label, i)
 		_progress_option.add_item(label, i)
 
 
@@ -109,8 +111,8 @@ func _refresh_form() -> void:
 		_id_edit.text = ""
 		_title_edit.text = ""
 		_description_edit.text = ""
-		_visibility_option.select(Quest.QuestState.OCULTA)
-		_progress_option.select(Quest.QuestState.DESACTIVADA)
+		_visibility_option.select(Quest.QuestVisibility.OCULTA)
+		_progress_option.select(Quest.QuestState.ACTIVADA)
 		_prereq_list.clear()
 		_prereq_list.deselect_all()
 		_syncing_ui = false
@@ -169,8 +171,8 @@ func _on_new_pressed() -> void:
 	var q := Quest.new()
 	q.id = _build_default_id()
 	q.title = "Nueva mision"
-	q.visibility_state = Quest.QuestState.OCULTA
-	q.progress_state = Quest.QuestState.DESACTIVADA
+	q.visibility_state = Quest.QuestVisibility.OCULTA
+	q.progress_state = Quest.QuestState.ACTIVADA
 	_quests.append(q)
 	_selected_idx = _quests.size() - 1
 	_refresh_all()
@@ -366,8 +368,8 @@ func _load_from_json(path: String) -> void:
 		q.id = str(raw.get("id", "")).strip_edges()
 		q.title = str(raw.get("title", ""))
 		q.description = str(raw.get("description", ""))
-		q.visibility_state = int(raw.get("visibility_state", Quest.QuestState.OCULTA))
-		q.progress_state = int(raw.get("progress_state", Quest.QuestState.DESACTIVADA))
+		q.visibility_state = int(raw.get("visibility_state", Quest.QuestVisibility.OCULTA))
+		q.progress_state = int(raw.get("progress_state", Quest.QuestState.ACTIVADA))
 
 		q.requires_ids.clear()
 		var reqs_variant: Variant = raw.get("requires_ids", [])

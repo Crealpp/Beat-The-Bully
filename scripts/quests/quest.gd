@@ -6,10 +6,13 @@ extends Resource
 
 signal quest_updated(quest: Quest)
 
-enum QuestState {
+enum QuestVisibility {
 	DESACTIVADA,
 	OCULTA,
 	VISIBLE,
+}
+
+enum QuestState {
 	ACTIVADA,
 	EN_CURSO,
 	COMPLETADA,
@@ -20,11 +23,11 @@ enum QuestState {
 @export_multiline var description: String = ""
 @export var requires_ids: Array[String] = []
 
-@export var visibility_state: QuestState = QuestState.OCULTA
-@export var progress_state: QuestState = QuestState.DESACTIVADA
+@export var visibility_state: QuestVisibility = QuestVisibility.OCULTA
+@export var progress_state: QuestState = QuestState.ACTIVADA
 
 
-func set_visibility_state(new_state: QuestState) -> void:
+func set_visibility_state(new_state: QuestVisibility) -> void:
 	if visibility_state == new_state:
 		return
 	visibility_state = new_state
@@ -39,11 +42,11 @@ func set_progress_state(new_state: QuestState) -> void:
 
 
 func show() -> void:
-	set_visibility_state(QuestState.VISIBLE)
+	set_visibility_state(QuestVisibility.VISIBLE)
 
 
 func hide() -> void:
-	set_visibility_state(QuestState.OCULTA)
+	set_visibility_state(QuestVisibility.OCULTA)
 
 
 func activate() -> void:
@@ -59,5 +62,5 @@ func complete() -> void:
 
 
 func reset_states() -> void:
-	set_visibility_state(QuestState.OCULTA)
-	set_progress_state(QuestState.DESACTIVADA)
+	set_visibility_state(QuestVisibility.OCULTA)
+	set_progress_state(QuestState.ACTIVADA)

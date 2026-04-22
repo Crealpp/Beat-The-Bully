@@ -57,8 +57,8 @@ func load_from_json(path: String) -> bool:
 		q.id = str(raw.get("id", "")).strip_edges()
 		q.title = str(raw.get("title", ""))
 		q.description = str(raw.get("description", ""))
-		q.visibility_state = int(raw.get("visibility_state", Quest.QuestState.OCULTA))
-		q.progress_state = int(raw.get("progress_state", Quest.QuestState.DESACTIVADA))
+		q.visibility_state = int(raw.get("visibility_state", Quest.QuestVisibility.OCULTA))
+		q.progress_state = int(raw.get("progress_state", Quest.QuestState.ACTIVADA))
 
 		var req_variant: Variant = raw.get("requires_ids", [])
 		q.requires_ids.clear()
